@@ -44,13 +44,14 @@ class Plugin extends PluginBase
      * @return array
      */
     public function boot()
-    {
+    {   
         config([
             "jwt" => config("jozef.userapi::jwt")
         ]);
         $this->app->register(AuthServiceProvider::class);
         $this->app->alias("auth", AuthManager::class);
         $this->app->alias("auth", Factory::class);
+
         $this->app->register(LaravelServiceProvider::class);
         $this->app->alias("JWTAuth", \Tymon\JWTAuth\Facades\JWTAuth::class);
         $this->app->alias("JWTFactory", \Tymon\JWTAuth\Facades\JWTFactory::class);

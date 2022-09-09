@@ -9,10 +9,21 @@ use Carbon\Carbon;
 use October\Rain\Auth\Models\User as UserBase;
 use RainLab\User\Models\Settings as UserSettings;
 use October\Rain\Auth\AuthException;
+use Tymon\JWTAuth\Contracts\JWTSubject;
 
-class User extends UserBase
+class User extends UserBase implements JWTSubject
 {
     use \October\Rain\Database\Traits\SoftDelete;
+
+    public function getJWTIdentifier()
+    {
+        return $this->getKey();
+    }
+
+    public function getJWTCustomClaims()
+    {
+        return [];
+    }
 
     /**
      * @var string The database table used by the model.

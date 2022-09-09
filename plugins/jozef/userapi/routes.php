@@ -1,8 +1,5 @@
 <?php
 
-use RainLab\User\Models\User;
-    use Jozef\Userapi\Http\Resources\UserResource;
-
     use Jozef\Userapi\Http\Controllers\RegisterController;
     use Jozef\Userapi\Http\Controllers\LoginController;
     use Jozef\Userapi\Http\Controllers\ResetPassController;
@@ -12,7 +9,9 @@ use RainLab\User\Models\User;
 
     Route::group(["prefix" => "api"], function() {
         // routes that need authentication
-        Route::group(["prefix" => "auth"], function() {
+        Route::group([
+            "prefix" => "auth"
+        ], function() {
             Route::post("register", RegisterController::class);
             Route::post("login", LoginController::class);
             Route::post("reset/password", ResetPassController::class);
@@ -21,6 +20,6 @@ use RainLab\User\Models\User;
         Route::match(["post", "get"], "users/{id}", ShowUserController::class);
 
         // routes that will be based on jwt soon
-        Route::post("update/user", UpdateUserController::class);
-        Route::post("delete/user", DeleteUserController::class);
+            Route::post("update/user", UpdateUserController::class);
+            Route::post("delete/user", DeleteUserController::class);
     });
