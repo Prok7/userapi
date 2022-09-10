@@ -1,6 +1,5 @@
 <?php
     namespace Jozef\Userapi\Http\Controllers;
-    use RainLab\User\Facades\Auth;
     use Jozef\Userapi\Http\Resources\UserResource;
 
     class UpdateUserController {
@@ -12,6 +11,6 @@
             }
             $user->fill(post());
             $user->save();
-            return $user;
+            return new UserResource($user);
         }
     };
