@@ -8,6 +8,7 @@
     use Jozef\Userapi\Http\Controllers\DeleteUserController;
 
     Route::group(["prefix" => "api"], function() {
+
         // routes that need authentication (email and password)
         Route::group([
             "prefix" => "auth"
@@ -17,11 +18,13 @@
             Route::post("reset/password", ResetPassController::class);
         });
 
+        // get user info based on id
         Route::match(["post", "get"], "users/{id}", ShowUserController::class);
 
         // routes that are just for logged users
         Route::post("update/user", UpdateUserController::class);
-        Route::post("delete/user", DeleteUserController::class);
+        Route::delete("delete/user", DeleteUserController::class);
         Route::get("jwt/refresh", [JWTController::class, "refreshJWT"]);
         Route::get("jwt/invalidate", [JWTController::class, "invalidateJWT"]);
+
     });

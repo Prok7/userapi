@@ -5,11 +5,12 @@
 
     class DeleteUserController {
         function __invoke() {
-            try {
-                $user = auth()->userOrFail();
-            } catch (\Tymon\JWTAuth\Exceptions\UserNotDefinedException $e) {
-                return response()->json(["error" => $e->getMessage()]);
-            }
+            $payload = auth()->payload();
+            $user = Auth::authenticate([
+                "email" => $payload["email"],
+                "password" => $payload["password"]
+            ]);
+            
             $user->forceDelete();
             return new UserResource($user);
         }

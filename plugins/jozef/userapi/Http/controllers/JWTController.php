@@ -6,7 +6,7 @@
         // login
         function login() {
             $credentials = request(["email", "password"]);
-            $token = auth()->attempt($credentials);
+            $token = auth()->claims($credentials)->attempt($credentials);
 
             if ($token === false) {
                 return response()->json(["error" => "Wrong email or password"]);
