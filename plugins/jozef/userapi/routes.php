@@ -22,7 +22,9 @@
         Route::match(["post", "get"], "users/{id}", ShowUserController::class);
 
         // routes that are just for logged users
-        Route::post("update/user", UpdateUserController::class);
+        Route::group(["middleware" => Tymon\JWTAuth\Http\Middleware\Authenticate::class], function() {
+            Route::post("update/user", UpdateUserController::class);
+        });
         Route::delete("delete/user", DeleteUserController::class);
         Route::get("jwt/refresh", [JWTController::class, "refreshJWT"]);
         Route::get("jwt/invalidate", [JWTController::class, "invalidateJWT"]);
