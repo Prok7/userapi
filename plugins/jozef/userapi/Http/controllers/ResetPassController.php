@@ -10,10 +10,11 @@
                 "email" => post("email"),
                 "password" => post("password")
             ]);
+
             $user->password = post("new_password");
             $user->password_confirmation = post("new_password_confirmation");
             $user->save();
 
-            return new UserResource($user);
+            return response()->json(["message" => "Password resetted", new UserResource($user)]);
         }
     };

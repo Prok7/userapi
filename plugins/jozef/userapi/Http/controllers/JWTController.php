@@ -3,10 +3,10 @@
 
     // jwt controller
     class JWTController {
-        // login
+        // login user
         function login() {
             $credentials = request(["email", "password"]);
-            $token = auth()->claims($credentials)->attempt($credentials);
+            $token = auth()->attempt($credentials);
 
             if ($token === false) {
                 return response()->json(["error" => "Wrong email or password"]);

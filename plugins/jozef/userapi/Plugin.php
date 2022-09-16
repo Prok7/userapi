@@ -3,7 +3,7 @@
 use Backend;
 use Illuminate\Auth\AuthManager;
 use Illuminate\Auth\AuthServiceProvider;
-use Illuminate\Auth\Middleware\Authenticate;
+use Tymon\JWTAuth\Http\Middleware\Authenticate;
 use Illuminate\Contracts\Auth\Factory;
 use System\Classes\PluginBase;
 use Tymon\JWTAuth\Providers\LaravelServiceProvider;
@@ -35,7 +35,6 @@ class Plugin extends PluginBase
      */
     public function register()
     {
-
     }
 
     /**
@@ -56,6 +55,7 @@ class Plugin extends PluginBase
         $this->app->alias("JWTAuth", \Tymon\JWTAuth\Facades\JWTAuth::class);
         $this->app->alias("JWTFactory", \Tymon\JWTAuth\Facades\JWTFactory::class);
         $this->app["router"]->aliasMiddleware("auth", Authenticate::class);
+        $this->app->bind(\Illuminate\Contracts\Auth\Guard::class, "auth.driver");
     }
 
     /**
