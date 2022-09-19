@@ -45,8 +45,10 @@ class Plugin extends PluginBase
     public function boot()
     {   
         config([
-            "jwt" => config("jozef.userapi::jwt")
+            "jwt"  => config("jozef.userapi::jwt"),
+            "auth" => config("jozef.userapi::auth")
         ]);
+
         $this->app->register(AuthServiceProvider::class);
         $this->app->alias("auth", AuthManager::class);
         $this->app->alias("auth", Factory::class);

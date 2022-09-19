@@ -25,5 +25,5 @@
             Route::get("jwt/refresh", [JWTController::class, "refreshJWT"]);
             Route::get("jwt/invalidate", [JWTController::class, "invalidateJWT"]);
         });
-        
+
     });
