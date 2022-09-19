@@ -18,6 +18,9 @@
         // get user info based on id
         Route::match(["post", "get"], "users/{id}", [UserController::class, "show"]);
 
+        // activate user by activation code
+        Route::post("users/{id}/activate", [RegisterController::class, "activate"]);
+
         // routes that are just for logged users
         Route::group(["middleware" => "auth"], function() {
             Route::post("update/user", [UserController::class, "update"]);            
