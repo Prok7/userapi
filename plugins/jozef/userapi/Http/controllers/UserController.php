@@ -18,7 +18,7 @@
         function delete() {
             $user = $this->getUser();
             $user->forceDelete();
-            return response()->json(["message" => "User deleted",  new UserResource($user)]);
+            return new UserResource($user);
         }
 
         // show user based on id

@@ -15,6 +15,6 @@
             $user->password_confirmation = post("new_password_confirmation");
             $user->save();
 
-            return response()->json(["message" => "Password resetted", new UserResource($user)]);
+            return new UserResource($user);
         }
     };
