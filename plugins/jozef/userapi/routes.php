@@ -11,9 +11,10 @@
             "prefix" => "auth"
         ], function() {
             Route::post("register", RegisterController::class);
+            Route::post("resend/code", [RegisterController::class, "resendCode"]);
+            Route::post("activate", [UserController::class, "activate"]);
             Route::post("login", [JWTController::class, "login"]);
             Route::post("reset/password", ResetPassController::class);
-            Route::post("activate", [RegisterController::class, "activate"]);
         });
 
         // get user info based on id

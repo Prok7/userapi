@@ -1,7 +1,8 @@
 <?php
     namespace Jozef\Userapi\Http\Controllers;
 
-    use Illuminate\Support\Facades\Mail;
+use Exception;
+use Illuminate\Support\Facades\Mail;
     use RainLab\User\Facades\Auth;
     use Jozef\Userapi\Http\Resources\UserResource;
     use RainLab\User\Models\User;
@@ -32,10 +33,10 @@
             return new UserResource($user);
         }
 
-        // send email to user1
+        // send activation email to user
         private function sendMail($user) {
             $params = [
-                "name" => $user->name, 
+                "name" => $user->name,
                 "activation_code" => $user->activation_code
             ];
 
@@ -43,12 +44,22 @@
                 $message->to($user->email);
                 $message->subject("Activate account");
             });
+
+            $user->sent_code_at = date("Y-m-d H:i:s");
+            $user->save();
         }
 
-        // activate user
-        function activate() {
+        // resend activation code to user
+        function resendCode() {
             $user = User::where("email", post("email"))->first();
-            $user->attemptActivation(post("activation_code"));
+
+            if ($user->is_activated) {
+                return response()->json(["error" => "User is already active"]);
+            }
+
+            $user->activation_code = $this->generateCode();
+            $user->save();
+            $this->sendMail($user);
             return new UserResource($user);
         }
 

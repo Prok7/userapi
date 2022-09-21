@@ -10,7 +10,7 @@
                 "surname" => $this->surname,
                 "email" => $this->email,
                 "is_activated" => $this->is_activated,
-                "registered" => date($this->created_at)
+                "registered_at" => date($this->created_at)
             ];
         }
     }

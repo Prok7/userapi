@@ -27,6 +27,21 @@
             return new UserResource($user);
         }
 
+        // activate user
+        function activate() {
+            $user = User::where("email", post("email"))->first();
+            $sent_time = strtotime($user->sent_code_at);
+            $current_time = strtotime(date("Y-m-d H:i:s"));
+            $elapsed_time = round(($current_time - $sent_time) / 60, 2); // in minutes
+
+            if ($elapsed_time < env("ACTIVATION_CODE_TTL", 10)) {
+                $user->attemptActivation(post("activation_code"));
+                return new UserResource($user);
+            } else {
+                return response()->json(["error" => "Activation code has expired"]);
+            }
+        }
+
         // get user based on jwt passed in header
         private function getUser() {
             try {
