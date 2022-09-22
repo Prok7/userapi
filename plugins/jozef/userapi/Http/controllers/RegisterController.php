@@ -27,8 +27,8 @@ use Illuminate\Support\Facades\Mail;
                 "password_confirmation" => $password_confirmation
             ]);
             $user->activation_code = $activation_code;
-            $user->save();
             $this->sendMail($user);
+            $user->save();
 
             return new UserResource($user);
         }
@@ -45,8 +45,7 @@ use Illuminate\Support\Facades\Mail;
                 $message->subject("Activate account");
             });
 
-            $user->sent_code_at = date("Y-m-d H:i:s");
-            $user->save();
+            $user->sent_code_at = now();
         }
 
         // resend activation code to user
@@ -58,8 +57,8 @@ use Illuminate\Support\Facades\Mail;
             }
 
             $user->activation_code = $this->generateCode();
-            $user->save();
             $this->sendMail($user);
+            $user->save();
             return new UserResource($user);
         }
 
