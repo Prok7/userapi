@@ -16,7 +16,7 @@
         'providers' => [
             'users' => [
                 'driver' => 'eloquent',
-                'model' => '\RainLab\User\Models\User',
+                'model' => '\Jozef\Userapi\Models\User',
             ],
         ]
     ];

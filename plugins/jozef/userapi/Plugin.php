@@ -7,6 +7,7 @@ use Tymon\JWTAuth\Http\Middleware\Authenticate;
 use Illuminate\Contracts\Auth\Factory;
 use System\Classes\PluginBase;
 use Tymon\JWTAuth\Providers\LaravelServiceProvider;
+use RainLab\User\Models\User;
 
 /**
  * Userapi Plugin Information File
@@ -45,8 +46,9 @@ class Plugin extends PluginBase
     public function boot()
     {   
         config([
-            "jwt"  => config("jozef.userapi::jwt"),
-            "auth" => config("jozef.userapi::auth")
+            "jwt"    => config("jozef.userapi::jwt"),
+            "auth"   => config("jozef.userapi::auth"),
+            "config" => config("jozef.userapi::config") 
         ]);
 
         $this->app->register(AuthServiceProvider::class);
@@ -58,6 +60,10 @@ class Plugin extends PluginBase
         $this->app->alias("JWTFactory", \Tymon\JWTAuth\Facades\JWTFactory::class);
         $this->app["router"]->aliasMiddleware("auth", Authenticate::class);
         $this->app->bind(\Illuminate\Contracts\Auth\Guard::class, "auth.driver");
+
+        User::extend(function($model) {
+            $model->addDateAttribute("sent_code_at");
+        });
     }
 
     /**

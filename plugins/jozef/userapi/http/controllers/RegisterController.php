@@ -1,8 +1,7 @@
 <?php
     namespace Jozef\Userapi\Http\Controllers;
 
-use Exception;
-use Illuminate\Support\Facades\Mail;
+    use Illuminate\Support\Facades\Mail;
     use RainLab\User\Facades\Auth;
     use Jozef\Userapi\Http\Resources\UserResource;
     use RainLab\User\Models\User;
@@ -27,8 +26,9 @@ use Illuminate\Support\Facades\Mail;
                 "password_confirmation" => $password_confirmation
             ]);
             $user->activation_code = $activation_code;
-            $this->sendMail($user);
+            $user->sent_code_at = now();
             $user->save();
+            $this->sendMail($user);
 
             return new UserResource($user);
         }
@@ -44,8 +44,6 @@ use Illuminate\Support\Facades\Mail;
                 $message->to($user->email);
                 $message->subject("Activate account");
             });
-
-            $user->sent_code_at = now();
         }
 
         // resend activation code to user
@@ -57,8 +55,9 @@ use Illuminate\Support\Facades\Mail;
             }
 
             $user->activation_code = $this->generateCode();
-            $this->sendMail($user);
+            $user->sent_code_at = now();
             $user->save();
+            $this->sendMail($user);
             return new UserResource($user);
         }
 

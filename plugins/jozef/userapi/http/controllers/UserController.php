@@ -1,7 +1,6 @@
 <?php
     namespace Jozef\Userapi\Http\Controllers;
 
-    use Carbon\Carbon;
     use Jozef\Userapi\Http\Resources\UserResource;
     use Tymon\JWTAuth\Exceptions\UserNotDefinedException;
     use RainLab\User\Models\User;
@@ -34,7 +33,7 @@
             $user = User::where("email", post("email"))->first();
             $elapsed_time = now()->diffInSeconds($user->sent_code_at) / 60; // in minutes
 
-            if ($elapsed_time < env("ACTIVATION_CODE_TTL", 10)) {
+            if ($elapsed_time < config("activation_code_ttl")) {
                 $user->attemptActivation(post("activation_code"));
                 return new UserResource($user);
             } else {
